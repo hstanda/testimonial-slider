@@ -1,6 +1,11 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class TS_CPT
+ *
+ * Registers the 'testimonial' custom post type.
+ */
 class TS_CPT {
     public function __construct() {
         add_action( 'init', [ $this, 'register_cpt' ] );

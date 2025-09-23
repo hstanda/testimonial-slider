@@ -1,13 +1,23 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class TS_Assets
+ */
 class TS_Assets {
-    public function __construct() {
+    
+    public function __construct() { 
+        <?php
+        // Hook the enqueue_assets method to the wp_enqueue_scripts action.
+        // This ensures that plugin styles and scripts are loaded on the frontend with given priority
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ], 20 );
         add_action( 'wp_enqueue_scripts', [ $this, 'force_full_jquery' ], 1 );
     }
 
-    // Fix slim jQuery issue
+    /**
+     * Force loading the full version of jQuery on the frontend.
+     * This is necessary for compatibility with certain plugins and themes.
+     */
     public function force_full_jquery() {
         if ( ! is_admin() ) {
             wp_deregister_script( 'jquery' );
@@ -16,6 +26,14 @@ class TS_Assets {
         }
     }
 
+    /**
+     * Enqueue all necessary frontend styles and scripts for the testimonial slider.
+     *
+     * - Loads Slick Carousel CSS and JS from CDN.
+     * - Loads the plugin's custom stylesheet.
+     * - Retrieves slider settings from the WordPress options table, with defaults.
+     * - Injects an inline script to initialize the Slick slider with these settings on elements with the class "testimonial-slider".
+    */
     public function enqueue_assets() {
         wp_enqueue_style( 'slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' );
         wp_enqueue_style( 'slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css' );

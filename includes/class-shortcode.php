@@ -1,11 +1,20 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-
+/**
+ * Class TS_Shortcode
+ *
+ * Handles the [testimonial_slider] shortcode to display testimonials.
+ */
 class TS_Shortcode {
     public function __construct() {
+        /* Register the shortcode */
         add_shortcode( 'testimonial_slider', [ $this, 'render_slider' ] );
     }
-
+    /**
+     * Renders the testimonial slider.
+     *
+     * @return string HTML output of the testimonial slider.
+     */
     public function render_slider() {
         ob_start();
 
