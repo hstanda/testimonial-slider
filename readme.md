@@ -26,6 +26,11 @@ A simple and powerful Testimonial Slider plugin for WordPress with **Slick.js** 
 
 ---
 
+## Demo Link
+
+[DEMO](https://wp.harjeevan.ca/testimonial-slider).
+
+---
 ## Usage
 Use the shortcode to display the slider:  
 
