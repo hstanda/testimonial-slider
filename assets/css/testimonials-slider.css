@@ -1,0 +1,30 @@
+p.testimonial-text {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.testimonial-image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 40px;
+}
+p.testimonial-name {
+    margin: 0;
+    font-weight: 600;
+    bottom: 25px;
+    position: absolute;
+}
+.testimonial-item {
+    display: flex !important;
+    align-items: center;
+    gap: 18px;
+    height: 390px !important;
+    margin: 8px;
+    background: aliceblue;
+    padding: 12px;
+    border-radius: 10px;
+    flex-direction: column;
+}
+.slick-prev:before, .slick-next:before {
+    color: #145085 !important;
+}
+
