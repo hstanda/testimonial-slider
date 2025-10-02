@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Class TS_Assets
  */
+
 class TS_Assets {
-    
-    public function __construct() { 
-        <?php
+
+    public function __construct() {
         // Hook the enqueue_assets method to the wp_enqueue_scripts action.
         // This ensures that plugin styles and scripts are loaded on the frontend with given priority
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ], 20 );
@@ -18,10 +18,14 @@ class TS_Assets {
      * Force loading the full version of jQuery on the frontend.
      * This is necessary for compatibility with certain plugins and themes.
      */
+    /**
+     * Force loading the full version of jQuery on the frontend.
+     * This is necessary for compatibility with certain plugins and themes.
+     */
     public function force_full_jquery() {
         if ( ! is_admin() ) {
             wp_deregister_script( 'jquery' );
-            wp_register_script( 'jquery', includes_url( '/js/jquery/jquery.js' ), false, null, true );
+            wp_register_script( 'jquery', includes_url( '/js/jquery/jquery.js' ), [], null, true );
             wp_enqueue_script( 'jquery' );
         }
     }
@@ -33,13 +37,23 @@ class TS_Assets {
      * - Loads the plugin's custom stylesheet.
      * - Retrieves slider settings from the WordPress options table, with defaults.
      * - Injects an inline script to initialize the Slick slider with these settings on elements with the class "testimonial-slider".
-    */
+     * - Only enqueues assets if the shortcode is present or on testimonial archive.
+     */
     public function enqueue_assets() {
-        wp_enqueue_style( 'slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' );
-        wp_enqueue_style( 'slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css' );
-        wp_enqueue_style( 'ts-css', TS_PLUGIN_URL . 'assets/css/testimonials-slider.css' );
+        global $post;
+        $enqueue = false;
+        if ( is_singular() && isset( $post->post_content ) && has_shortcode( $post->post_content, 'testimonials_slider' ) ) {
+            $enqueue = true;
+        } elseif ( is_post_type_archive( 'testimonial' ) ) {
+            $enqueue = true;
+        }
+        if ( ! $enqueue ) return;
 
-        wp_enqueue_script( 'slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', [ 'jquery' ], null, true );
+        wp_enqueue_style( 'slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css', [], '1.8.1' );
+        wp_enqueue_style( 'slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css', [ 'slick-css' ], '1.8.1' );
+        wp_enqueue_style( 'ts-css', TS_PLUGIN_URL . 'assets/css/testimonials-slider.css', [], '1.0.1' );
+
+        wp_enqueue_script( 'slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', [ 'jquery' ], '1.8.1', true );
 
         $settings = get_option( 'ts_slider_settings', [] );
         $defaults = [
@@ -52,6 +66,13 @@ class TS_Assets {
             'adaptiveHeight' => 1,
         ];
         $settings = wp_parse_args( $settings, $defaults );
+
+        // Sanitize settings for JS output
+        array_walk( $settings, function( &$v ) {
+            if ( is_string( $v ) ) {
+                $v = esc_js( $v );
+            }
+        });
 
         wp_add_inline_script( 'slick-js', 'jQuery(document).ready(function($){ $(".testimonial-slider").slick(' . wp_json_encode( $settings ) . '); });' );
     }

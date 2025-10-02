@@ -4,12 +4,19 @@ Plugin Name: Testimonials Slider
 Description: A simple and powerful Testimonial Slider plugin with Slick integration, a shortcode, and admin settings.
 Version: 1.0.1
 Author: Harjeevan Singh Tanda
-Author URI: harjeevan.ca
+Author URI: https://harjeevan.ca
+Text Domain: testimonials-slider
+Domain Path: /languages
 */
 
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// Load plugin textdomain for translations
+add_action('plugins_loaded', function() {
+    load_plugin_textdomain('testimonials-slider', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
 
 /**
  * Activation - default options
@@ -36,14 +43,28 @@ register_activation_hook(__FILE__, function () {
     }
 });
 
+// Uninstall cleanup: remove options and CPT data
+register_uninstall_hook(__FILE__, function() {
+    delete_option('ts_slider_settings');
+    // Optionally, delete testimonials CPT posts and meta
+    $testimonials = get_posts([
+        'post_type' => 'testimonial',
+        'numberposts' => -1,
+        'post_status' => 'any',
+    ]);
+    foreach ($testimonials as $post) {
+        wp_delete_post($post->ID, true);
+    }
+});
+
 /**
  * Register custom post type
  */
 add_action('init', function () {
     register_post_type('testimonial', [
         'labels' => [
-            'name' => 'Testimonials',
-            'singular_name' => 'Testimonial',
+            'name' => __('Testimonials', 'testimonials-slider'),
+            'singular_name' => __('Testimonial', 'testimonials-slider'),
         ],
         'public' => true,
         'show_ui' => true,
@@ -69,6 +90,16 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('ts-slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css', [], '1.8.1');
     wp_enqueue_style('ts-slick-theme', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css', ['ts-slick-css'], '1.8.1');
     wp_enqueue_script('ts-slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', ['jquery'], '1.8.1', true);
+
+    // Only enqueue on pages with the shortcode or CPT archive
+    global $post;
+    $enqueue = false;
+    if (is_singular() && isset($post->post_content) && has_shortcode($post->post_content, 'testimonial_slider')) {
+        $enqueue = true;
+    } elseif (is_post_type_archive('testimonial')) {
+        $enqueue = true;
+    }
+    if (!$enqueue) return;
 
     // inline plugin CSS/JS
     wp_add_inline_style('ts-slick-theme', ts_get_custom_css());
@@ -350,7 +381,7 @@ add_shortcode('testimonial_slider', function () {
                 echo '<div class="ts-short-text">' . esc_html($short_text) . '</div>';
                 // full content includes safe HTML - hidden by CSS
                 echo '<div class="ts-full-text">' . $full_content_sanitized . '</div>';
-                echo '<a href="#" class="ts-read-more" aria-expanded="false">Read More</a>';
+                echo '<a href="#" class="ts-read-more" aria-expanded="false">' . esc_html__('Read More', 'testimonials-slider') . '</a>';
                 echo '</div>';
             } else {
                 echo '<div class="testimonial-text">' . $full_content_sanitized . '</div>';
@@ -376,7 +407,7 @@ add_shortcode('testimonial_slider', function () {
         echo '</div>';
         wp_reset_postdata();
     } else {
-        echo '<p>No testimonials found.</p>';
+        echo '<p>' . esc_html__('No testimonials found.', 'testimonials-slider') . '</p>';
     }
 
     return ob_get_clean();
@@ -387,10 +418,10 @@ add_shortcode('testimonial_slider', function () {
  */
 add_action('add_meta_boxes', function () {
     // Rating meta box
-    add_meta_box('ts_rating_metabox', 'Rating', function ($post) {
+    add_meta_box('ts_rating_metabox', __('Rating', 'testimonials-slider'), function ($post) {
         $rating = intval(get_post_meta($post->ID, '_ts_rating', true));
         wp_nonce_field('ts_rating_save', 'ts_rating_nonce');
-        echo '<label for="ts_rating">Rating (1-5):</label> ';
+    echo '<label for="ts_rating">' . esc_html__('Rating (1-5):', 'testimonials-slider') . '</label> ';
         echo '<select name="ts_rating" id="ts_rating">';
         for ($i = 1; $i <= 5; $i++) {
             printf('<option value="%1$d" %2$s>%1$d ★</option>', $i, selected($rating, $i, false));
@@ -399,12 +430,12 @@ add_action('add_meta_boxes', function () {
     }, 'testimonial', 'normal', 'high');
 
     // Author Link meta box
-    add_meta_box('ts_author_link_metabox', 'Author Link', function ($post) {
+    add_meta_box('ts_author_link_metabox', __('Author Link', 'testimonials-slider'), function ($post) {
         $author_link = get_post_meta($post->ID, '_ts_author_link', true);
         wp_nonce_field('ts_author_link_save', 'ts_author_link_nonce');
-        echo '<label for="ts_author_link">Author URL:</label> ';
+    echo '<label for="ts_author_link">' . esc_html__('Author URL:', 'testimonials-slider') . '</label> ';
         echo '<input type="url" style="width:100%" name="ts_author_link" id="ts_author_link" value="' . esc_attr($author_link) . '" placeholder="https://example.com">';
-        echo '<p class="description">Optional. Add a website or profile URL for the author (will make the name clickable).</p>';
+    echo '<p class="description">' . esc_html__('Optional. Add a website or profile URL for the author (will make the name clickable).', 'testimonials-slider') . '</p>';
     }, 'testimonial', 'normal', 'default');
 });
 

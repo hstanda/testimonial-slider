@@ -6,37 +6,46 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Manages the settings page for the testimonial slider plugin.
  */
+/**
+ * Class TS_Settings
+ *
+ * Manages the settings page for the testimonial slider plugin.
+ */
 class TS_Settings {
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_menu' ] );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
     }
 
-    /** Adds the settings page to the WordPress admin menu */
+    /**
+     * Adds the settings page to the WordPress admin menu
+     */
     public function add_menu() {
         add_options_page(
-            'Testimonials Slider Settings',
-            'Testimonials Slider',
+            __( 'Testimonials Slider Settings', 'testimonials-slider' ),
+            __( 'Testimonials Slider', 'testimonials-slider' ),
             'manage_options',
             'ts-slider-settings',
             [ $this, 'render_page' ]
         );
     }
 
-    /** Registers the settings, sections, and fields */
+    /**
+     * Registers the settings, sections, and fields
+     */
     public function register_settings() {
         register_setting( 'ts_slider_settings_group', 'ts_slider_settings' );
 
-        add_settings_section( 'ts_main', 'Slider Configuration', null, 'ts-slider-settings' );
+        add_settings_section( 'ts_main', __( 'Slider Configuration', 'testimonials-slider' ), null, 'ts-slider-settings' );
 
         $fields = [
-            'slidesToShow'   => 'Slides To Show',
-            'slidesToScroll' => 'Slides To Scroll',
-            'autoplay'       => 'Autoplay',
-            'autoplaySpeed'  => 'Autoplay Speed (ms)',
-            'dots'           => 'Show Dots',
-            'arrows'         => 'Show Arrows',
-            'adaptiveHeight' => 'Adaptive Height',
+            'slidesToShow'   => __( 'Slides To Show', 'testimonials-slider' ),
+            'slidesToScroll' => __( 'Slides To Scroll', 'testimonials-slider' ),
+            'autoplay'       => __( 'Autoplay', 'testimonials-slider' ),
+            'autoplaySpeed'  => __( 'Autoplay Speed (ms)', 'testimonials-slider' ),
+            'dots'           => __( 'Show Dots', 'testimonials-slider' ),
+            'arrows'         => __( 'Show Arrows', 'testimonials-slider' ),
+            'adaptiveHeight' => __( 'Adaptive Height', 'testimonials-slider' ),
         ];
 
         foreach ( $fields as $id => $label ) {
@@ -44,11 +53,13 @@ class TS_Settings {
         }
     }
 
-    /** Renders the settings page */
+    /**
+     * Renders the settings page
+     */
     public function render_page() {
         ?>
         <div class="wrap">
-            <h1>Testimonials Slider Settings</h1>
+            <h1><?php echo esc_html( __( 'Testimonials Slider Settings', 'testimonials-slider' ) ); ?></h1>
             <form method="post" action="options.php">
                 <?php
                 settings_fields( 'ts_slider_settings_group' );

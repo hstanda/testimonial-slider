@@ -5,11 +5,18 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Handles the [testimonial_slider] shortcode to display testimonials.
  */
+
+/**
+ * Class TS_Shortcode
+ *
+ * Handles the [testimonial_slider] shortcode to display testimonials.
+ */
 class TS_Shortcode {
     public function __construct() {
         /* Register the shortcode */
         add_shortcode( 'testimonial_slider', [ $this, 'render_slider' ] );
     }
+
     /**
      * Renders the testimonial slider.
      *
@@ -35,18 +42,18 @@ class TS_Shortcode {
                 ?>
                 <div class="testimonial-item">
                     <?php if ( $image ) : ?>
-                        <div class="testimonial-image"><?= $image; ?></div>
+                        <div class="testimonial-image"><?php echo $image; ?></div>
                     <?php endif; ?>
                     <div class="testimonial-content">
-                        <p class="testimonial-text"><?= wp_trim_words( $content, 20, '...' ); ?></p>
-                        <p class="testimonial-name">- <?= esc_html( $name ); ?></p>
+                        <p class="testimonial-text"><?php echo esc_html( wp_trim_words( $content, 20, '...' ) ); ?></p>
+                        <p class="testimonial-name">- <?php echo esc_html( $name ); ?></p>
                     </div>
                 </div>
                 <?php
             }
             echo '</div>';
         } else {
-            echo '<p>No testimonials found.</p>';
+            echo '<p>' . esc_html__( 'No testimonials found.', 'testimonials-slider' ) . '</p>';
         }
         wp_reset_postdata();
 
