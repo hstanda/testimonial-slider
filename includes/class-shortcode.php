@@ -1,3 +1,4 @@
+namespace TestimonialsSlider;
 <?php
 /**
  * Shortcode handler for Testimonials Slider plugin.

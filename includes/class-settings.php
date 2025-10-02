@@ -1,3 +1,4 @@
+namespace TestimonialsSlider;
 <?php
 /**
  * Settings handler for Testimonials Slider plugin.

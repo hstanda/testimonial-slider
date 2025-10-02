@@ -1,3 +1,4 @@
+namespace TestimonialsSlider;
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 

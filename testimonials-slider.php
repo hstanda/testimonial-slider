@@ -1,4 +1,5 @@
 <?php
+
 /*
 Plugin Name: Testimonials Slider
 Description: A simple and powerful Testimonial Slider plugin with Slick integration, a shortcode, and admin settings.
@@ -7,23 +8,33 @@ Author: Harjeevan Singh Tanda
 Author URI: https://harjeevan.ca
 Text Domain: testimonials-slider
 Domain Path: /languages
+Requires PHP: 7.2
+Requires at least: 5.6
+Tested up to: 6.4
+License: GPL-2.0
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-if (!defined('ABSPATH')) {
+
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+
 // Load plugin textdomain for translations
-add_action('plugins_loaded', function() {
-    load_plugin_textdomain('testimonials-slider', false, dirname(plugin_basename(__FILE__)) . '/languages');
-});
+add_action( 'plugins_loaded', function() {
+    load_plugin_textdomain( 'testimonials-slider', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+} );
+
+// Autoload classes (Composer or fallback)
+require_once __DIR__ . '/bootstrap.php';
 
 /**
  * Activation - default options
  */
-register_activation_hook(__FILE__, function () {
-    if (get_option('ts_slider_settings') === false) {
-        add_option('ts_slider_settings', [
+register_activation_hook( __FILE__, function () {
+    if ( get_option( 'ts_slider_settings' ) === false ) {
+        add_option( 'ts_slider_settings', [
             'slidesToShow'   => 3,
             'slidesToScroll' => 1,
             'autoplay'       => 0,
@@ -39,23 +50,11 @@ register_activation_hook(__FILE__, function () {
             'bg_color'       => '#ffffff',
             'custom_width'   => 0,
             'custom_height'  => 0,
-        ]);
+        ] );
     }
-});
+} );
 
-// Uninstall cleanup: remove options and CPT data
-register_uninstall_hook(__FILE__, function() {
-    delete_option('ts_slider_settings');
-    // Optionally, delete testimonials CPT posts and meta
-    $testimonials = get_posts([
-        'post_type' => 'testimonial',
-        'numberposts' => -1,
-        'post_status' => 'any',
-    ]);
-    foreach ($testimonials as $post) {
-        wp_delete_post($post->ID, true);
-    }
-});
+// Uninstall logic is now in uninstall.php for best practice
 
 /**
  * Register custom post type
