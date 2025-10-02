@@ -22,13 +22,20 @@ A simple and powerful Testimonial Slider plugin for WordPress with **Slick.js** 
 ## Features
 
 - Responsive testimonial slider using [Slick Carousel](https://kenwheeler.github.io/slick/)
-- Easy-to-use shortcode to embed anywhere
+- Easy-to-use shortcode `[testimonials_slider]` for embedding anywhere
 - Admin panel for managing testimonials (add, edit, delete)
-- Lightweight and SEO-friendly
-- Works with any theme
-- Customizable slider settings (autoplay, dots, arrows, slides to show, etc.)
-- Supports author images, ratings, and links
-- Accessible and mobile-friendly
+- Custom post type for testimonials (title, content, featured image)
+- Customizable slider settings:
+	- Autoplay, slides to show/scroll, dots, arrows, adaptive height, etc.
+- Author image, rating, and author link support
+- Character limit with “Read More” toggle for long testimonials
+- Custom background color and image size/shape options
+- SEO-friendly and works with any theme
+- Accessible and mobile-friendly output
+- All user-facing strings are translation-ready (i18n)
+- Proper uninstall cleanup (removes options and meta)
+- Namespaced, autoloaded, and follows WordPress coding standards
+- Extensible code structure for future enhancements
 
 ---
 
