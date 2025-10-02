@@ -1,16 +1,13 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Settings handler for Testimonials Slider plugin.
+ *
+ * @package TestimonialsSlider
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
-/**
- * Class TS_Settings
- *
- * Manages the settings page for the testimonial slider plugin.
- */
-/**
- * Class TS_Settings
- *
- * Manages the settings page for the testimonial slider plugin.
- */
 class TS_Settings {
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_menu' ] );

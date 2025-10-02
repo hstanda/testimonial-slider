@@ -1,16 +1,13 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
 /**
- * Class TS_Shortcode
+ * Shortcode handler for Testimonials Slider plugin.
  *
- * Handles the [testimonial_slider] shortcode to display testimonials.
+ * @package TestimonialsSlider
  */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
-/**
- * Class TS_Shortcode
- *
- * Handles the [testimonial_slider] shortcode to display testimonials.
- */
 class TS_Shortcode {
     public function __construct() {
         /* Register the shortcode */

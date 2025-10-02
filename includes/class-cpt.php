@@ -1,17 +1,13 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
- * Class TS_CPT
+ * Custom Post Type handler for Testimonials Slider plugin.
  *
- * Registers the 'testimonial' custom post type.
+ * @package TestimonialsSlider
  */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
-/**
- * Class TS_CPT
- *
- * Registers the 'testimonial' custom post type with i18n and best practices.
- */
 class TS_CPT {
     public function __construct() {
         add_action( 'init', [ $this, 'register_cpt' ] );

@@ -1,9 +1,12 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
- * Class TS_Assets
+ * Assets handler for Testimonials Slider plugin.
+ *
+ * @package TestimonialsSlider
  */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class TS_Assets {
 
