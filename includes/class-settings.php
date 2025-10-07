@@ -1,5 +1,5 @@
-namespace TestimonialsSlider;
 <?php
+namespace TestimonialsSlider;
 /**
  * Settings handler for Testimonials Slider plugin.
  *

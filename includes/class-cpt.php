@@ -1,5 +1,5 @@
-namespace TestimonialsSlider;
 <?php
+namespace TestimonialsSlider;
 /**
  * Custom Post Type handler for Testimonials Slider plugin.
  *

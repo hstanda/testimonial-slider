@@ -1,5 +1,5 @@
-namespace TestimonialsSlider;
 <?php
+namespace TestimonialsSlider;
 /**
  * Assets handler for Testimonials Slider plugin.
  *
