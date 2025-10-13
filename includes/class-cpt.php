@@ -7,10 +7,18 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Registers the 'testimonial' custom post type.
  */
 class TS_CPT {
+    /**
+     * Constructor.
+     * Hooks CPT registration to WordPress init.
+     */
     public function __construct() {
         add_action( 'init', [ $this, 'register_cpt' ] );
     }
 
+    /**
+     * Registers the 'testimonial' custom post type with WordPress.
+     * Usage: Called on 'init' action.
+     */
     public function register_cpt() {
         $labels = [
             'name'          => 'Testimonials',

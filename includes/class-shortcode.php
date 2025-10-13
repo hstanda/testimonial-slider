@@ -6,13 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Handles the [testimonial_slider] shortcode to display testimonials.
  */
 class TS_Shortcode {
+    /**
+     * Constructor.
+     * Registers the [testimonial_slider] shortcode with WordPress.
+     */
     public function __construct() {
-        /* Register the shortcode */
         add_shortcode( 'testimonial_slider', [ $this, 'render_slider' ] );
     }
     /**
      * Renders the testimonial slider.
      *
+     * @return string HTML output of the testimonial slider.
+     */
+    /**
+     * Renders the testimonial slider HTML output for the shortcode.
+     * Usage: Called when [testimonial_slider] is used in post/page.
      * @return string HTML output of the testimonial slider.
      */
     public function render_slider() {

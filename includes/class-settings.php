@@ -7,12 +7,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Manages the settings page for the testimonial slider plugin.
  */
 class TS_Settings {
+    /**
+     * Constructor.
+     * Hooks settings page and registration to admin actions.
+     */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_menu' ] );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
     }
 
     /** Adds the settings page to the WordPress admin menu */
+    /**
+     * Adds the plugin settings page to the WordPress admin menu.
+     * Usage: Called on 'admin_menu' action.
+     */
     public function add_menu() {
         add_options_page(
             'Testimonials Slider Settings',
@@ -24,6 +32,10 @@ class TS_Settings {
     }
 
     /** Registers the settings, sections, and fields */
+    /**
+     * Registers plugin settings, sections, and fields with WordPress.
+     * Usage: Called on 'admin_init' action.
+     */
     public function register_settings() {
         register_setting( 'ts_slider_settings_group', 'ts_slider_settings' );
 
@@ -45,6 +57,10 @@ class TS_Settings {
     }
 
     /** Renders the settings page */
+    /**
+     * Renders the plugin settings page HTML in the admin.
+     * Usage: Callback for settings page menu.
+     */
     public function render_page() {
         ?>
         <div class="wrap">
